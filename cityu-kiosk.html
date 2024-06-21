@@ -51,8 +51,8 @@
             <span class="close-button" id="closeButton">&times;</span>
             <div>
                 <h1 style="color: black;">CityU ChatBot</h1>
-                <p id="status">Click the button to ask question</p>
-                <button id="record-btn">Ask Question</button>
+                <p id="status">Click the button to ask question in voice</p>
+                <button id="record-btn">Ask Question in Voice</button>
                 <textarea
                   id="transcript"
                   rows="10"
@@ -155,7 +155,7 @@
         };
 
         recognition.onresult = function (event) {
-          recordBtn.textContent = "Ask Question";
+          recordBtn.textContent = "Ask Question in Voice";
           const text = event.results[0][0].transcript;
           transcript.value = text;
           foo();
