@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: grey;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+            width: 500px;
+            max-width: 80%;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .open-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeButton">&times;</span>
+            <div>
+                <h1 style="color: black;">CityU ChatBot</h1>
+                <p id="status">Click the button to ask question</p>
+                <button id="record-btn">Ask Question</button>
+                <textarea
+                  id="transcript"
+                  rows="10"
+                  cols="50"
+                  placeholder="Ask question here"
+                ></textarea>
+                <br />
+                <button id="save-btn">Generate responses</button>
+            
+                <textarea
+                  id="answer"
+                  rows="10"
+                  cols="50"
+                  placeholder="Answer will appears here"
+                ></textarea>
+            </div>
+        </div>
+    </div>
+    <button class="open-button" id="openButton">Open ChatBot</button>
+
+    <script>
+        document.getElementById('openButton').addEventListener('click', function() {
+            document.getElementById('modal').style.display = 'flex';
+        });
+
+        document.getElementById('closeButton').addEventListener('click', function() {
+            document.getElementById('modal').style.display = 'none';
+        });
+
+        // Close the modal if the user clicks outside of the modal content
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+
+      const recordBtn = document.getElementById("record-btn");
+      const saveBtn = document.getElementById("save-btn");
+      const status = document.getElementById("status");
+      const transcript = document.getElementById("transcript");
+
+      const foo = () => {
+        text = transcript.value;
+        console.log(text);
+
+        // Define the headers and body as JavaScript objects
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: "Bearer SABPRJE2WHGQ4LODIX2SYUNSP3WSFELQ",
+        };
+
+        const body = { type: "message", message: text };
+
+        // Define the URL to which the request will be sent
+        const url =
+          "https://api.wit.ai/event?v=20240618&session_id=prodxw9&context_map=%7B%7D";
+
+        // Use the fetch API to send a POST request
+        fetch(url, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Success:", data);
+            document.getElementById("answer").textContent = data.response.text;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      };
+
+      let recognition;
+      if ("webkitSpeechRecognition" in window) {
+        recognition = new webkitSpeechRecognition();
+      } else if ("SpeechRecognition" in window) {
+        recognition = new SpeechRecognition();
+      } else {
+        alert("Your browser does not support speech recognition.");
+      }
+
+      if (recognition) {
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+
+        recognition.onstart = function () {
+          status.textContent = "Recording...";
+          recordBtn.textContent = "Stop recording";
+        };
+
+        recognition.onresult = function (event) {
+          recordBtn.textContent = "Ask Question";
+          const text = event.results[0][0].transcript;
+          transcript.value = text;
+          foo();
+          status.textContent = "Recording complete.";
+        };
+
+        recognition.onerror = function (event) {
+          status.textContent = "Error occurred in recognition: " + event.error;
+        };
+
+        recognition.onend = function () {
+          recordBtn.textContent = "Record Voice";
+          status.textContent = "Click the button to start recording";
+        };
+
+        recordBtn.addEventListener("click", () => {
+          recognition.start();
+        });
+
+        saveBtn.addEventListener("click", () => {
+          foo();
+        });
+      }
+    </script>
+</body>
+</html>
