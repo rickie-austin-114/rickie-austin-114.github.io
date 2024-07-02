@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to Speech Example</title>
+</head>
+<body>
+  <h1>Text to Speech Example</h1>
+  <textarea id="text" rows="10" cols="50">Enter text here...</textarea><br>
+  <button onclick="speak()">Speak</button>
+
+  <script>
+    function speak() {
+      // Get the text from the textarea
+      const text = document.getElementById('text').value;
+
+      // Create a new instance of SpeechSynthesisUtterance
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set properties (optional)
+      utterance.lang = 'zh-HK'; // Set the language
+      utterance.pitch = 1;      // Set the pitch (0.1 to 2)
+      utterance.rate = 1;       // Set the rate (0.1 to 10)
+      utterance.volume = 1;     // Set the volume (0 to 1)
+
+      // Speak the text
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
