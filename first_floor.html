@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smplrspace Viewer</title>
+    <!-- Load smplr.js and its styles -->
+  </head>
+  <body>
+    <script src="https://app.smplrspace.com/lib/smplr.js"></script>
+    <link href="https://app.smplrspace.com/lib/smplr.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+
+    <div id="wrapper">
+      <div id="smplrspace-container"></div>
+    </div>
+
+
+    <script>
+      const API_ENDPOINT =
+        "https://optimus-sg.powerworkplace.com/api:TH2aX53s/lingnan_live";
+
+
+      const CLIENT_ID = "pub_45cf413215bd43f79621e0b28f8a815b";
+      const SPACE_ID = "73242c82-a0e9-4c96-8d28-089829ecf3d0";
+
+      const UPDATE_FREQUENCY = 10;
+
+
+      const desk_index = {
+        "LRT01-S01": 0,
+        "LRT01-S02": 1,
+        "LRT01-S03": 2,
+        "LRT01-S04": 3,
+        "LRT01-S05": 4,
+        "LRT01-S06": 5,
+        "LRT01-S07": 6,
+        "LRT01-S08": 7,
+        "LRT01-S09": 8,
+        "LRT01-S10": 9,
+        "LRT02-S01": 10,
+        "LRT02-S02": 11,
+        "LRT02-S03": 12,
+        "LRT02-S04": 13,
+        "LRT02-S05": 14,
+        "LRT02-S06": 15,
+        "LRT02-S07": 16,
+        "LRT02-S08": 17,
+        "LRT02-S09": 18,
+        "LRT02-S10": 19,
+        "LRT03-S01": 20,
+        "LRT03-S02": 21,
+        "LRT03-S03": 22,
+        "LRT03-S04": 23,
+        "LRT03-S05": 24,
+        "LRT03-S06": 25,
+        "LRT03-S07": 26,
+        "LRT03-S08": 27,
+        "LRT03-S09": 28,
+        "LRT03-S10": 29,
+        "LRT04-S01": 30,
+        "LRT04-S02": 31,
+        "LRT04-S03": 32,
+        "LRT04-S04": 33,
+        "LRT04-S05": 34,
+        "LRT04-S06": 35,
+        "LRT04-S07": 36,
+        "LRT04-S08": 37,
+        "LRT04-S09": 38,
+        "LRT04-S10": 39,
+        "LRT05-S01": 40,
+        "LRT05-S02": 41,
+        "LRT05-S03": 42,
+        "LRT05-S04": 43,
+        "LRT05-S05": 44,
+        "LRT05-S06": 45,
+        "LRT05-S07": 46,
+        "LRT05-S08": 47,
+        "LRT05-S09": 48,
+        "LRT05-S10": 49,
+        "LRT06-S01": 50,
+        "LRT06-S02": 51,
+        "LRT06-S03": 52,
+        "LRT06-S04": 53,
+        "LRT06-S05": 54,
+        "LRT06-S06": 55,
+        "LRT06-S07": 56,
+        "LRT06-S08": 57,
+        "LRT06-S09": 58,
+        "LRT06-S10": 59,
+      };
+
+      const desk_filter = {
+        "LRT01-S01": "LRT01-S01",
+        "LRT01-S02": "LRT01-S02",
+        "LRT01-S03": "LRT01-S03",
+        "LRT01-S04": "LRT01-S04",
+        "LRT01-S05": "LRT01-S05",
+        "LRT01-S06": "LRT01-S06",
+        "LRT01-S07": "LRT01-S07",
+        "LRT01-S08": "LRT01-S08",
+        "LRT01-S09": "LRT01-S09",
+        "LRT01-S10": "LRT01-S10",
+        "LRT02-S01": "LRT02-S01",
+        "LRT02-S02": "LRT02-S02",
+        "LRT02-S03": "LRT02-S03",
+        "LRT02-S04": "LRT02-S04",
+        "LRT02-S05": "LRT02-S05",
+        "LRT02-S06": "LRT02-S06",
+        "LRT02-S07": "LRT02-S07",
+        "LRT02-S08": "LRT02-S08",
+        "LRT02-S09": "LRT02-S09",
+        "LRT02-S10": "LRT02-S10",
+        "LRT03-S01": "LRT03-S01",
+        "LRT03-S02": "LRT03-S02",
+        "LRT03-S03": "LRT03-S03",
+        "LRT03-S04": "LRT03-S04",
+        "LRT03-S05": "LRT03-S05",
+        "LRT03-S06": "LRT03-S06",
+        "LRT03-S07": "LRT03-S07",
+        "LRT03-S08": "LRT03-S08",
+        "LRT03-S09": "LRT03-S09",
+        "LRT03-S10": "LRT03-S10",
+        "LRT04-S01": "LRT04-S01",
+        "LRT04-S02": "LRT04-S02",
+        "LRT04-S03": "LRT04-S03",
+        "LRT04-S04": "LRT04-S04",
+        "LRT04-S05": "LRT04-S05",
+        "LRT04-S06": "LRT04-S06",
+        "LRT04-S07": "LRT04-S07",
+        "LRT04-S08": "LRT04-S08",
+        "LRT04-S09": "LRT04-S09",
+        "LRT04-S10": "LRT04-S10",
+        "LRT05-S01": "LRT05-S01",
+        "LRT05-S02": "LRT05-S02",
+        "LRT05-S03": "LRT05-S03",
+        "LRT05-S04": "LRT05-S04",
+        "LRT05-S05": "LRT05-S05",
+        "LRT05-S06": "LRT05-S06",
+        "LRT05-S07": "LRT05-S07",
+        "LRT05-S08": "LRT05-S08",
+        "LRT05-S09": "LRT05-S09",
+        "LRT05-S10": "LRT05-S10",
+        "LRT06-S01": "LRT06-S01",
+        "LRT06-S02": "LRT06-S02",
+        "LRT06-S03": "LRT06-S03",
+        "LRT06-S04": "LRT06-S04",
+        "LRT06-S05": "LRT06-S05",
+        "LRT06-S06": "LRT06-S06",
+        "LRT06-S07": "LRT06-S07",
+        "LRT06-S08": "LRT06-S08",
+        "LRT06-S09": "LRT06-S09",
+        "LRT06-S10": "LRT06-S10",
+      };
+
+      const room_index = {};
+
+      const room_filter = {};
+
+
+      const dict = [
+  {
+    "id": "97bb9348-8841-42ea-91f2-f0589f05473c",
+    "name": "LRR Desk",
+    "type": "furniture",
+    "assets": [
+      {
+        "id": "2a4af663-0eee-42b1-a569-5ac13b4daae3",
+        "name": "LRT01-S01",
+        "furnitureId": "89c48d6c-452d-479b-93ac-0bb3fdab5302",
+        "layerType": "furniture"
+      },
+      {
+        "id": "c25407a9-69e2-4580-9baa-cd3037801a8d",
+        "name": "LRT01-S02",
+        "furnitureId": "27f0f002-ae2b-4cdc-9583-e975628d9166",
+        "layerType": "furniture"
+      },
+      {
+        "id": "4c59265f-81ba-4256-99b7-1d3e9c91db93",
+        "name": "LRT01-S03",
+        "furnitureId": "b759dd18-3a08-4fd8-801f-0354d11d373c",
+        "layerType": "furniture"
+      },
+      {
+        "id": "a7051fac-2793-4047-b5ea-dc2335276b14",
+        "name": "LRT01-S04",
+        "furnitureId": "873b8b00-a567-460e-bf13-a331f7815edc",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e8b5f525-4447-40ba-9e03-f0513b96ed89",
+        "name": "LRT01-S05",
+        "furnitureId": "903ddffb-3f00-48be-b9e1-b1d118612d13",
+        "layerType": "furniture"
+      },
+      {
+        "id": "5613a796-9986-4075-bfae-770e70736b80",
+        "name": "LRT01-S06",
+        "furnitureId": "377d7a1b-2ad0-4ea2-b440-55c93b27205f",
+        "layerType": "furniture"
+      },
+      {
+        "id": "34ca1218-0977-462a-9365-5bb409b63185",
+        "name": "LRT01-S07",
+        "furnitureId": "16a950de-e1a9-4b27-92b9-e53c6b33ed89",
+        "layerType": "furniture"
+      },
+      {
+        "id": "0994c26f-6749-4909-896d-17bf227fca25",
+        "name": "LRT01-S08",
+        "furnitureId": "28c57101-b5c5-47d8-bada-020ea6612028",
+        "layerType": "furniture"
+      },
+      {
+        "id": "61855b20-8359-486a-ab92-e51e2347e645",
+        "name": "LRT01-S09",
+        "furnitureId": "e393aabf-1322-4a2b-b804-fe687d562bc0",
+        "layerType": "furniture"
+      },
+      {
+        "id": "4e4f525c-8540-45d1-a3ee-1f646353ffd3",
+        "name": "LRT01-S10",
+        "furnitureId": "58569e5a-76df-48af-80a9-abb73921a24f",
+        "layerType": "furniture"
+      },
+      {
+        "id": "ca314bfd-6190-4f03-8d58-e1ef1007ade6",
+        "name": "LRT02-S01",
+        "furnitureId": "5fbdfad9-cab3-4dcc-9c45-ea6d287080ee",
+        "layerType": "furniture"
+      },
+      {
+        "id": "a6e8f32c-ca3e-43fb-a937-60a84bf400ca",
+        "name": "LRT02-S02",
+        "furnitureId": "6592e650-1b3b-4337-92f5-aa3daf0edada",
+        "layerType": "furniture"
+      },
+      {
+        "id": "7dbffb04-1264-405a-b61a-26ad9deff4b2",
+        "name": "LRT02-S03",
+        "furnitureId": "dc415137-1953-4fef-aa64-a5c1dee467aa",
+        "layerType": "furniture"
+      },
+      {
+        "id": "4cef2109-693d-4ac8-b6de-108dcee4af37",
+        "name": "LRT02-S04",
+        "furnitureId": "e27b6acf-578a-4fb0-a25c-73122cce8f5b",
+        "layerType": "furniture"
+      },
+      {
+        "id": "67325ee2-a533-443f-a23e-721ee071de50",
+        "name": "LRT02-S05",
+        "furnitureId": "a5064aba-6864-4927-b01c-bd99a30f490a",
+        "layerType": "furniture"
+      },
+      {
+        "id": "c5f8d077-e848-4cdf-a4d3-0c9d0f2a3bc4",
+        "name": "LRT02-S06",
+        "furnitureId": "4076dbeb-f8b4-4e24-a7c9-56314189a187",
+        "layerType": "furniture"
+      },
+      {
+        "id": "d41dc8c6-a716-479d-bd29-5b3602794750",
+        "name": "LRT02-S07",
+        "furnitureId": "6271dbd5-ecd3-4675-81c4-8d2616d77bbe",
+        "layerType": "furniture"
+      },
+      {
+        "id": "3ae03ab5-5179-41c2-9060-9c05ef6ba3ff",
+        "name": "LRT02-S08",
+        "furnitureId": "36979db2-0752-4625-b396-ffefec894fa3",
+        "layerType": "furniture"
+      },
+      {
+        "id": "cf2cc9a6-2f63-41d4-9f91-449455cf1f2b",
+        "name": "LRT02-S09",
+        "furnitureId": "4c8decc7-07ae-43aa-8b19-ba8f2d50448c",
+        "layerType": "furniture"
+      },
+      {
+        "id": "a0b88db3-cf40-4390-8e21-4362a0070a56",
+        "name": "LRT02-S10",
+        "furnitureId": "7243cc64-8fa8-4ca2-88a3-a8bbc2a6c75d",
+        "layerType": "furniture"
+      },
+      {
+        "id": "1fff8614-28d8-471b-804d-7c729a87b79c",
+        "name": "LRT03-S01",
+        "furnitureId": "3ea58ec0-c994-41a2-a657-971e184daa2f",
+        "layerType": "furniture"
+      },
+      {
+        "id": "dcd0d6e6-9376-4a2c-a8b0-ced2238fd870",
+        "name": "LRT03-S02",
+        "furnitureId": "d5d8fcbf-d986-48ef-be87-dd14c73a07d3",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e1b9ce38-d03e-41eb-80c6-ea3e808627e2",
+        "name": "LRT03-S03",
+        "furnitureId": "41f51661-3da0-480a-badc-2a7bb972daf2",
+        "layerType": "furniture"
+      },
+      {
+        "id": "69b1a8e5-cdb7-49e4-810e-dfb1e438c90e",
+        "name": "LRT03-S04",
+        "furnitureId": "c6939f6c-3592-4576-b99c-c7655d8abc0f",
+        "layerType": "furniture"
+      },
+      {
+        "id": "40f35036-373f-4640-84a1-cebab2788bb2",
+        "name": "LRT03-S05",
+        "furnitureId": "521a967b-e0c9-4241-8d85-7a09e94fe800",
+        "layerType": "furniture"
+      },
+      {
+        "id": "95c7395a-1742-4153-9e77-db2b365bbfdc",
+        "name": "LRT03-S06",
+        "furnitureId": "a46e5eac-44de-4945-9471-576e5e8b44bb",
+        "layerType": "furniture"
+      },
+      {
+        "id": "0455a87f-e3bc-4679-860d-b8fee335af48",
+        "name": "LRT03-S07",
+        "furnitureId": "c0142678-6c9e-4c2f-896e-7cba9b0cb0bf",
+        "layerType": "furniture"
+      },
+      {
+        "id": "3a4d5d94-5910-457c-b02f-794cfa2f1bf9",
+        "name": "LRT03-S08",
+        "furnitureId": "a2bb4f34-07e2-4a96-9721-3dd5493711e8",
+        "layerType": "furniture"
+      },
+      {
+        "id": "5de0c526-bed0-407a-88e0-d335408284f9",
+        "name": "LRT03-S09",
+        "furnitureId": "06c72744-94d4-4435-a2bd-734f853b4cbb",
+        "layerType": "furniture"
+      },
+      {
+        "id": "f419d856-4d56-48ed-a44d-b296017af2cd",
+        "name": "LRT03-S10",
+        "furnitureId": "2c1087f9-a3b1-4d31-8bb9-9c9e870b509e",
+        "layerType": "furniture"
+      },
+      {
+        "id": "9ab7041d-f45d-4736-b5ce-e669dfb6313b",
+        "name": "LRT04-S01",
+        "furnitureId": "f7700fc1-230c-4d9b-84ba-24b16f58494a",
+        "layerType": "furniture"
+      },
+      {
+        "id": "c3432109-cf33-4a29-bff7-bbfd9632f148",
+        "name": "LRT04-S02",
+        "furnitureId": "6d75ee1a-0ba1-4a46-a722-959ad86c3454",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e563b7bf-e688-4fe6-aff3-b60b2f98b2f2",
+        "name": "LRT04-S03",
+        "furnitureId": "e53a5c14-3fbf-47dd-8b73-ca7707509554",
+        "layerType": "furniture"
+      },
+      {
+        "id": "a95be06c-fd42-46cd-924e-83136442b31b",
+        "name": "LRT04-S04",
+        "furnitureId": "be6f0852-8a14-4396-bde2-47704e4ea595",
+        "layerType": "furniture"
+      },
+      {
+        "id": "100af926-5529-46b2-bb15-d94b72c6b4c7",
+        "name": "LRT04-S05",
+        "furnitureId": "951e7224-dc9e-42a7-8168-98e5e4a57fc2",
+        "layerType": "furniture"
+      },
+      {
+        "id": "de64f929-9530-49de-a37e-faa676f178dc",
+        "name": "LRT04-S06",
+        "furnitureId": "73f5abbc-1f67-45fa-92cb-7cca0a78a4d6",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e14e617f-0a1e-4411-8111-429ad2e8045f",
+        "name": "LRT04-S07",
+        "furnitureId": "57703c2b-f6d9-4933-a739-21c931d7bb93",
+        "layerType": "furniture"
+      },
+      {
+        "id": "dd3758d1-c6a8-4489-89fb-2814c784c5d5",
+        "name": "LRT04-S08",
+        "furnitureId": "3b5d17df-431e-4640-8002-0c4ced15f512",
+        "layerType": "furniture"
+      },
+      {
+        "id": "5854e452-a9b7-4e36-97b9-a1320734656a",
+        "name": "LRT04-S09",
+        "furnitureId": "36610137-0c37-4c1a-91a3-5b180b774c14",
+        "layerType": "furniture"
+      },
+      {
+        "id": "d1b91ecc-eda2-4674-a263-c3a17dc4de24",
+        "name": "LRT04-S10",
+        "furnitureId": "6fc1190d-52e2-4fad-8f8d-58401b9f03b1",
+        "layerType": "furniture"
+      },
+      {
+        "id": "39964306-eb35-4745-bdd0-3e2eb9603b5a",
+        "name": "LRT05-S01",
+        "furnitureId": "92179e29-12de-4ebc-b4d8-c40926b30e11",
+        "layerType": "furniture"
+      },
+      {
+        "id": "49be04c0-6eb7-4663-bd86-aa3f882e6c0b",
+        "name": "LRT05-S02",
+        "furnitureId": "1f019ffb-b3b2-4e89-bc0b-5be28285a387",
+        "layerType": "furniture"
+      },
+      {
+        "id": "b7771164-3ceb-479b-9659-8a48e0f38586",
+        "name": "LRT05-S03",
+        "furnitureId": "5fcda99b-8fcc-46d7-b23d-b6f7913966a1",
+        "layerType": "furniture"
+      },
+      {
+        "id": "c6d2d8d2-b760-49d0-bbac-564c2c48ea73",
+        "name": "LRT05-S04",
+        "furnitureId": "ff54c73d-2213-4038-87ac-7b85336cc5b7",
+        "layerType": "furniture"
+      },
+      {
+        "id": "091a782f-ffda-4649-b609-aadb0b64a5d8",
+        "name": "LRT05-S05",
+        "furnitureId": "e3a55a41-5187-4f8c-a2d9-46f1c0179899",
+        "layerType": "furniture"
+      },
+      {
+        "id": "07f7eff6-d6a0-43ad-b128-b619275f87ee",
+        "name": "LRT05-S06",
+        "furnitureId": "e45820e7-9880-4020-8359-a3c8a956d8a4",
+        "layerType": "furniture"
+      },
+      {
+        "id": "a3ba8f96-8467-48d1-8021-763112125673",
+        "name": "LRT05-S07",
+        "furnitureId": "2b494733-2974-48b9-81a1-d950b28366b6",
+        "layerType": "furniture"
+      },
+      {
+        "id": "902e54b9-d99f-49b7-85c6-9a4ce0892427",
+        "name": "LRT05-S08",
+        "furnitureId": "8ceb964e-5b1f-4545-9ccb-ad8e50680bdc",
+        "layerType": "furniture"
+      },
+      {
+        "id": "ba3725df-9918-480e-bd36-92d73c55030f",
+        "name": "LRT05-S09",
+        "furnitureId": "db255f87-f21e-4822-a909-e24ddce28aa2",
+        "layerType": "furniture"
+      },
+      {
+        "id": "40dc991a-bf01-411c-866e-ce428dd7fb23",
+        "name": "LRT05-S10",
+        "furnitureId": "da4e6c46-a484-4cfc-b195-38ff85a36815",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e07b0433-6dd4-4ee4-890c-f041860b4617",
+        "name": "LRT06-S01",
+        "furnitureId": "3501bd21-1f16-46b7-8313-cb3f6b0e5606",
+        "layerType": "furniture"
+      },
+      {
+        "id": "8de75d56-73e0-41fb-a877-c83055e9793e",
+        "name": "LRT06-S02",
+        "furnitureId": "9c42f4de-3b39-4d5d-aefb-923c995974ce",
+        "layerType": "furniture"
+      },
+      {
+        "id": "9cd8ed21-5c7c-48e0-a60a-f2d8a9678b6d",
+        "name": "LRT06-S03",
+        "furnitureId": "32951866-2852-465d-ad02-7d6cf717b707",
+        "layerType": "furniture"
+      },
+      {
+        "id": "f9247401-2ba2-4896-b31c-8d4e6927125f",
+        "name": "LRT06-S04",
+        "furnitureId": "31828888-be0b-4245-b558-cc8d0b8879a6",
+        "layerType": "furniture"
+      },
+      {
+        "id": "9c53d86f-bfaa-4899-b7bd-d4aecff1d1aa",
+        "name": "LRT06-S05",
+        "furnitureId": "ccd4676b-bb5c-483a-89ce-b9c55ce8256b",
+        "layerType": "furniture"
+      },
+      {
+        "id": "e1680f72-a5e0-4e37-a0e6-8c851dd5bc1f",
+        "name": "LRT06-S06",
+        "furnitureId": "2a97898f-1ba9-4b7c-97f2-c0d999280161",
+        "layerType": "furniture"
+      },
+      {
+        "id": "05b730dc-30d1-465b-bce3-32aa509f8bc0",
+        "name": "LRT06-S07",
+        "furnitureId": "c28091df-3538-40bc-a2bf-ae51694599af",
+        "layerType": "furniture"
+      },
+      {
+        "id": "fd020198-efb6-4599-8186-450bceaf8586",
+        "name": "LRT06-S08",
+        "furnitureId": "412945c9-c111-4a60-8291-7df8cd3360fe",
+        "layerType": "furniture"
+      },
+      {
+        "id": "eb0ca871-ad7c-4ca4-ae98-bd4deef602ab",
+        "name": "LRT06-S09",
+        "furnitureId": "09e9d327-ea9f-468d-8077-9fcf6fe2a789",
+        "layerType": "furniture"
+      },
+      {
+        "id": "02e16118-e7f0-4b62-bbec-3fef12a66f4b",
+        "name": "LRT06-S10",
+        "furnitureId": "b34a9755-ea34-440f-9e90-05272cb52bed",
+        "layerType": "furniture"
+      }
+    ]
+  }
+];
+
+      const color_dict = {
+        occupied: "#ff3f34",
+        vacant: "#3aa655",
+        free: "#3aa655",
+        passive_occupied: "#ffbf00",
+      };
+
+      // smplrspace-script.js
+      class Space {
+        constructor(spaceId, clientToken, desks, rooms, sensors) {
+          this.spaceId = spaceId;
+          this.clientToken = clientToken;
+          this.space = null;
+          this.rooms = rooms;
+          this.desks = desks;
+          this.sensors = sensors;
+        }
+
+        initSpace(smplr) {
+          this.space = new smplr.Space({
+            spaceId: this.spaceId,
+            clientToken: this.clientToken,
+            containerId: "smplrspace-container",
+          });
+          this.space.startViewer({
+            preview: false,
+            cameraPlacement: {
+              alpha: 3,
+              beta: 1.7,
+              radius: 30,
+              target: {
+                x: -10,
+                y: 30,
+                z: -40,
+              },
+            },
+            onReady: () => this.fetchAll(),
+            onError: (error) => console.error("Could not start viewer", error),
+          });
+        }
+
+            
+
+        updateDataLayers() {
+          // remove previous layers if any
+          this.space.removeDataLayer("rooms");
+          this.space.removeDataLayer("desks");
+
+          const isRoomsEmpty = Object.keys(this.rooms).length === 0;
+          const isDesksEmpty = Object.keys(this.desks).length === 0;
+
+          if (!isRoomsEmpty) {
+            // add new layers
+            this.space.addDataLayer({
+              id: "rooms",
+              type: "polygon",
+              data: this.rooms,
+              tooltip: (d) => `${d.name} - ${d.available}`,
+              color: (d) => d.color,
+              alpha: 0.7,
+              height: 2.9,
+            });
+          }
+
+          if (!isDesksEmpty) {
+            this.space.addDataLayer({
+              id: "desks",
+              type: "furniture",
+              data: this.desks,
+              tooltip: (d) => `${d.name} - ${d.available}`,
+              color: (d) => d.color,
+            });
+          }
+        }
+
+        fetchAll() {
+          this.fetchData();
+        }
+
+
+        fetchData() {
+          fetch(API_ENDPOINT)
+            .then((res) => res.json())
+            .then((data) => {
+              let occupancy = {};
+              for (let i = 0; i < data.length; i++) {
+                let value = data[i];
+                let loc = value.area;
+                let timestamp = value.timestamp;
+                let available = "";
+                if (value.occupancy == 1) {
+                  available = "occupied";
+                } else if (value.occupancy > 1) {
+                  available = "occupied";
+                } else {
+                  available = "free";
+                }
+
+                let color = color_dict.hasOwnProperty(available)
+                  ? color_dict[available]
+                  : "#ffffff";
+
+                if (!occupancy.hasOwnProperty(loc)) {
+                  occupancy[loc] = {
+                    timestamp: timestamp,
+                    available: available,
+                    occupancy: value.occupancy,
+                    color: color,
+                  };
+                } else if (occupancy[loc].timestamp < timestamp) {
+                  occupancy[loc] = {
+                    timestamp: timestamp,
+                    available: available,
+                    occupancy: value.occupancy,
+                    color: color,
+                  };
+                }
+              }
+
+              for (let key in occupancy) {
+                if (
+                  occupancy.hasOwnProperty(key) &&
+                  desk_filter.hasOwnProperty(key)
+                ) {
+                  const jsonKey = desk_filter[key];
+                  const _index = desk_index[jsonKey];
+
+
+                  this.desks[_index]["available"] = occupancy[key]["available"];
+
+                  this.desks[_index]["color"] = occupancy[key]["color"];
+                } else if (
+                  occupancy.hasOwnProperty(key) &&
+                  room_filter.hasOwnProperty(key)
+                ) {
+                  //
+                  const jsonKey = room_filter[key];
+                  const _index = room_index[jsonKey];
+
+                  this.rooms[_index]["available"] = occupancy[key]["available"];
+                  this.rooms[_index]["numberOfPeople"] =
+                    occupancy[key]["numberOfPeople"];
+                  this.rooms[_index]["color"] = occupancy[key]["color"];
+                }
+              }
+              this.updateDataLayers();
+            });
+        }
+      }
+
+      spc = new Space(
+        SPACE_ID,
+        CLIENT_ID,
+        dict[0]["assets"],
+        [],
+        []
+      );
+
+      delete dict;
+
+      async function wait() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 500);
+        });
+      }
+
+      async function start() {
+        while (typeof smplr === "undefined") {
+          await wait();
+        }
+        spc.initSpace(smplr);
+        setInterval(() => {
+          spc.fetchAll();
+        }, UPDATE_FREQUENCY * 1000);
+      }
+
+      start();
+    </script>
+  </body>
+</html>

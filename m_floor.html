@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smplrspace Viewer</title>
+    <!-- Load smplr.js and its styles -->
+  </head>
+  <body>
+    <script src="https://app.smplrspace.com/lib/smplr.js"></script>
+    <link href="https://app.smplrspace.com/lib/smplr.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <div id="wrapper">
+      <div id="smplrspace-container"></div>
+    </div>
+
+
+
+    <script>
+      const API_ENDPOINT =
+        "https://optimus-sg.powerworkplace.com/api:TH2aX53s/lingnan_live";
+
+
+      const CLIENT_ID = "pub_45cf413215bd43f79621e0b28f8a815b";
+      const SPACE_ID = "90660c93-a72f-4412-ba81-07605f95d720";
+
+      const UPDATE_FREQUENCY = 10;
+
+      const desk_index = {
+        "MFC-S01": 0,
+        "MFC-S02": 1,
+        "MFC-S03": 2,
+        "MFC-S04": 3,
+        "MFC-S05": 4,
+        "MFC-S06": 5,
+        "MFC-S07": 6,
+        "MFC-S08": 7,
+        "MFC-S09": 8,
+        "MFC-S10": 9,
+        "MFC-S11": 10,
+        "MFC-S12": 11,
+        "MFC-S13": 12,
+        "MFC-S14": 13,
+        "MFC-S15": 14,
+        "MFC-S16": 15,
+        "MFC-S17": 16,
+        "MFC-S18": 17,
+        "MFC-S19": 18,
+        "MFC-S20": 19,
+        "MFC-S21": 20,
+        "MFC-S22": 21,
+        "MFC-S23": 22,
+        "MFC-S24": 23,
+      };
+
+      const desk_filter = {
+        "MFC-S01": "MFC-S01",
+        "MFC-S02": "MFC-S02",
+        "MFC-S03": "MFC-S03",
+        "MFC-S04": "MFC-S04",
+        "MFC-S05": "MFC-S05",
+        "MFC-S06": "MFC-S06",
+        "MFC-S07": "MFC-S07",
+        "MFC-S08": "MFC-S08",
+        "MFC-S09": "MFC-S09",
+        "MFC-S10": "MFC-S10",
+        "MFC-S11": "MFC-S11",
+        "MFC-S12": "MFC-S12",
+        "MFC-S13": "MFC-S13",
+        "MFC-S14": "MFC-S14",
+        "MFC-S15": "MFC-S15",
+        "MFC-S16": "MFC-S16",
+        "MFC-S17": "MFC-S17",
+        "MFC-S18": "MFC-S18",
+        "MFC-S19": "MFC-S19",
+        "MFC-S20": "MFC-S20",
+        "MFC-S21": "MFC-S21",
+        "MFC-S22": "MFC-S22",
+        "MFC-S23": "MFC-S23",
+        "MFC-S24": "MFC-S24",
+      };
+
+      const room_index = {};
+
+      const room_filter = {};
+
+      const dict = [
+        {
+          id: "5e8cb421-84e1-4fb7-94c9-129a006df20d",
+          name: "MFC Desk",
+          type: "furniture",
+          assets: [
+            {
+              id: "1bd8a743-f4d8-4079-acb0-e7339ae418fb",
+              name: "MFC-S01",
+              furnitureId: "9e94d03e-0574-4f88-b87b-0e0a76d41596",
+              layerType: "furniture",
+            },
+            {
+              id: "759c480e-508d-4d12-a6ca-ad0f0c1d3380",
+              name: "MFC-S02",
+              furnitureId: "9cd7cac9-d2f4-4ca4-827e-897013e1cb82",
+              layerType: "furniture",
+            },
+            {
+              id: "054b08b7-4b07-4ddb-8231-d061fa2e457a",
+              name: "MFC-S03",
+              furnitureId: "f3abd963-33bb-4c63-8bbc-b77b3a3ddc6f",
+              layerType: "furniture",
+            },
+            {
+              id: "5d686c58-7f25-4e29-a74f-ab5ade38e037",
+              name: "MFC-S04",
+              furnitureId: "7025d4af-76ac-4380-a231-c6c43cb28d58",
+              layerType: "furniture",
+            },
+            {
+              id: "79066529-fc71-42ab-9cac-778365a57e16",
+              name: "MFC-S05",
+              furnitureId: "3ca2cbf3-b658-49b1-aef3-2bd73814ac48",
+              layerType: "furniture",
+            },
+            {
+              id: "f6012e82-5852-4ad0-b2d9-e21ae1efc332",
+              name: "MFC-S06",
+              furnitureId: "9325601f-da54-4059-a3c6-1751e2c44cf7",
+              layerType: "furniture",
+            },
+            {
+              id: "37df3b0e-faa5-4cae-acf9-6a7a4b5dbab1",
+              name: "MFC-S07",
+              furnitureId: "22260b0b-caf4-4426-972f-ffad804b4a8e",
+              layerType: "furniture",
+            },
+            {
+              id: "711b3da0-d9dd-4b37-ba59-f392b42f4d44",
+              name: "MFC-S08",
+              furnitureId: "89b84e6f-18b5-4970-aed6-0b63cb28e341",
+              layerType: "furniture",
+            },
+            {
+              id: "09719f5f-b239-4244-8d29-1089e2639cb0",
+              name: "MFC-S09",
+              furnitureId: "6ccb1aff-bfee-4f4f-bc27-9ab0a4855189",
+              layerType: "furniture",
+            },
+            {
+              id: "857c8c7f-6f02-406b-b141-121a75ab3431",
+              name: "MFC-S10",
+              furnitureId: "575c7d03-2991-4516-b6a7-8b208727d13c",
+              layerType: "furniture",
+            },
+            {
+              id: "fccaeca3-d046-4474-832f-ec6c5921296b",
+              name: "MFC-S11",
+              furnitureId: "843b69fe-c8ff-466f-b836-eddd2b3cdfab",
+              layerType: "furniture",
+            },
+            {
+              id: "e87ac7ef-5c25-4941-8a2d-01e18095b7ae",
+              name: "MFC-S12",
+              furnitureId: "19dcce8f-1906-4c63-9f53-5d99a91bdcce",
+              layerType: "furniture",
+            },
+            {
+              id: "a22bbdc0-20a6-4d85-82c9-608a4a3f905e",
+              name: "MFC-S13",
+              furnitureId: "37ef1b64-c38e-44f4-ade4-5ec091d2c832",
+              layerType: "furniture",
+            },
+            {
+              id: "d5cf7f9d-c9f4-4d0c-afcb-c3f48fe32e1b",
+              name: "MFC-S14",
+              furnitureId: "828cec73-8fc2-4b75-8559-b04b3261b71c",
+              layerType: "furniture",
+            },
+            {
+              id: "dc274444-fe93-4f2e-86c1-1b3d25d38c6f",
+              name: "MFC-S15",
+              furnitureId: "ba006da6-4073-4765-8a88-911b8526218f",
+              layerType: "furniture",
+            },
+            {
+              id: "20c7ace3-b73e-4d4a-9450-232b5e49a013",
+              name: "MFC-S16",
+              furnitureId: "bae70c05-5bfc-4bda-a3bb-fd24cdd2dd22",
+              layerType: "furniture",
+            },
+            {
+              id: "e2e96048-7a99-4b0e-a8af-e5e6b1e0fdac",
+              name: "MFC-S17",
+              furnitureId: "2516bb31-7cc7-4ebc-8819-410a7b7e4f20",
+              layerType: "furniture",
+            },
+            {
+              id: "f8a45ad1-e4f2-4a0a-b224-ba29a84b1ea4",
+              name: "MFC-S18",
+              furnitureId: "c6d0bc09-d94a-436b-a2cf-98f52ccdacd9",
+              layerType: "furniture",
+            },
+            {
+              id: "fd5425ad-fb8d-4ae5-9c53-1412fa3ccbb7",
+              name: "MFC-S19",
+              furnitureId: "3cd17fe0-fb96-4ddb-aa45-36a209e546b5",
+              layerType: "furniture",
+            },
+            {
+              id: "26e05b1d-9ed1-4046-be83-84958cab7edd",
+              name: "MFC-S20",
+              furnitureId: "35379626-ffa6-48f6-adbd-9d2dd74773dd",
+              layerType: "furniture",
+            },
+            {
+              id: "a05b2a11-2bea-45a1-964d-805b391eae13",
+              name: "MFC-S21",
+              furnitureId: "a1608bd7-18a8-4cf6-864d-c0ab4bde0a75",
+              layerType: "furniture",
+            },
+            {
+              id: "9ee687cf-c83f-4c93-9b5a-b8185e0f6ce2",
+              name: "MFC-S22",
+              furnitureId: "ed592b0c-453f-4d24-9fdc-8cc5a8a01126",
+              layerType: "furniture",
+            },
+            {
+              id: "872cf542-e0d8-4581-8c0f-94166081fb81",
+              name: "MFC-S23",
+              furnitureId: "7b716bfe-b405-437f-83fa-89e5934dca98",
+              layerType: "furniture",
+            },
+            {
+              id: "7a7299b7-59e7-406d-8ad7-bce16348c467",
+              name: "MFC-S24",
+              furnitureId: "c33e4eb6-4cef-4582-a0fb-c7bcfdacff6d",
+              layerType: "furniture",
+            },
+          ],
+        },
+      ];
+
+      const color_dict = {
+        occupied: "#ff3f34",
+        vacant: "#3aa655",
+        free: "#3aa655",
+        passive_occupied: "#ffbf00",
+      };
+
+      class Space {
+        constructor(spaceId, clientToken, desks, rooms, sensors) {
+          this.spaceId = spaceId;
+          this.clientToken = clientToken;
+          this.space = null;
+          this.rooms = rooms;
+          this.desks = desks;
+          this.sensors = sensors;
+        }
+
+        initSpace(smplr) {
+          this.space = new smplr.Space({
+            spaceId: this.spaceId,
+            clientToken: this.clientToken,
+            containerId: "smplrspace-container",
+          });
+          this.space.startViewer({
+            preview: false,
+            cameraPlacement: {
+              alpha: 3,
+              beta: 1.7,
+              radius: 30,
+              target: {
+                x: -10,
+                y: 30,
+                z: -40,
+              },
+            },
+            onReady: () => this.fetchAll(),
+            onError: (error) => console.error("Could not start viewer", error),
+          });
+        }
+
+
+        updateDataLayers() {
+          // remove previous layers if any
+          this.space.removeDataLayer("rooms");
+          this.space.removeDataLayer("desks");
+
+          const isRoomsEmpty = Object.keys(this.rooms).length === 0;
+          const isDesksEmpty = Object.keys(this.desks).length === 0;
+
+          if (!isRoomsEmpty) {
+            // add new layers
+            this.space.addDataLayer({
+              id: "rooms",
+              type: "polygon",
+              data: this.rooms,
+              tooltip: (d) => `${d.name} - ${d.available}`,
+              color: (d) => d.color,
+              alpha: 0.7,
+              height: 2.9,
+            });
+          }
+
+          if (!isDesksEmpty) {
+            this.space.addDataLayer({
+              id: "desks",
+              type: "furniture",
+              data: this.desks,
+              tooltip: (d) => `${d.name} - ${d.available}`,
+              color: (d) => d.color,
+            });
+          }
+        }
+
+        fetchAll() {
+          this.fetchData();
+        }
+
+        fetchData() {
+          fetch(API_ENDPOINT)
+            .then((res) => res.json())
+            .then((data) => {
+              let occupancy = {};
+              for (let i = 0; i < data.length; i++) {
+                let value = data[i];
+                let loc = value.area;
+                let timestamp = value.timestamp;
+                let available = "";
+                if (value.occupancy == 1) {
+                  available = "occupied"; //"passive_occupied";
+                } else if (value.occupancy > 1) {
+                  available = "occupied";
+                } else {
+                  available = "free";
+                }
+
+                let color = color_dict.hasOwnProperty(available)
+                  ? color_dict[available]
+                  : "#ffffff";
+
+                if (!occupancy.hasOwnProperty(loc)) {
+                  occupancy[loc] = {
+                    timestamp: timestamp,
+                    available: available,
+                    occupancy: value.occupancy,
+                    color: color,
+                  };
+                } else if (occupancy[loc].timestamp < timestamp) {
+                  occupancy[loc] = {
+                    timestamp: timestamp,
+                    available: available,
+                    occupancy: value.occupancy,
+                    color: color,
+                  };
+                }
+              }
+
+              for (let key in occupancy) {
+                if (
+                  occupancy.hasOwnProperty(key) &&
+                  desk_filter.hasOwnProperty(key)
+                ) {
+                  //
+                  const jsonKey = desk_filter[key];
+                  const _index = desk_index[jsonKey];
+
+                  console.log("updated " + jsonKey);
+                  console.log(occupancy[key]);
+                  this.desks[_index]["available"] = occupancy[key]["available"];
+                  this.desks[_index]["color"] = occupancy[key]["color"];
+                  console.log(this.desks[0][_index]);
+                } else if (
+                  occupancy.hasOwnProperty(key) &&
+                  room_filter.hasOwnProperty(key)
+                ) {
+                  //
+                  const jsonKey = room_filter[key];
+                  const _index = room_index[jsonKey];
+
+                  this.rooms[_index]["available"] = occupancy[key]["available"];
+                  this.rooms[_index]["numberOfPeople"] =
+                    occupancy[key]["numberOfPeople"];
+                  this.rooms[_index]["color"] = occupancy[key]["color"];
+                }
+              }
+              this.updateDataLayers();
+            });
+        }
+      }
+
+      spc = new Space(
+        SPACE_ID,
+        CLIENT_ID,
+        dict[0]["assets"],
+        [],
+        [] 
+      );
+
+      delete dict;
+
+      async function wait() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 500);
+        });
+      }
+
+      async function start() {
+        while (typeof smplr === "undefined") {
+          await wait();
+        }
+        spc.initSpace(smplr);
+        setInterval(() => {
+          spc.fetchAll();
+        }, UPDATE_FREQUENCY * 1000);
+      }
+
+      start();
+    </script>
+  </body>
+</html>
