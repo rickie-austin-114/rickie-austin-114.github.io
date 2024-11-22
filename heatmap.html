@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script src="https://app.smplrspace.com/lib/smplr.js"></script>
+    <link href="https://app.smplrspace.com/lib/smplr.css" rel="stylesheet" />
+    <!-- Create a container for the viewer -->
+    <div id="wrapper">
+      <div id="smplrspace-container"></div>
+    </div>
+
+    <script>
+
+    const CLIENT_ID = "pub_6af6b3fdf20e42aabf8e9533c1c0f228";
+    const SPACE_ID = "3d40fb18-be10-480e-ac74-43a741fb46db";
+      const spaceId = SPACE_ID;
+      const clientToken = CLIENT_ID;
+
+      const sensors = [
+        {
+          id: "de9844aef33d",
+          name: "1",
+          position: {
+                x: 20.65234677712627,
+                z: -0.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "cde60d0f9c4b",
+          name: "2",
+          position: {
+                x: 14.65234677712627,
+                z: -2.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "e22831cdda28",
+          name: "3",
+          position: {
+                x: 20.65234677712627,
+                z: -4.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "f7262ecc48b9",
+          name: "4",
+          position:{
+                x: 14.65234677712627,
+                z: -7.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "fdee6f5c3609",
+          name: "5",
+          position: {
+                x: 20.65234677712627,
+                z: -10.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "fa4ced683b3e",
+          name: "6",
+          position: {
+            x: -3.77430667927675,
+            z: -57.3023438052912,
+            elevation: 0.009999999776482582,
+            levelIndex: 0,
+          },
+        },
+        {
+          id: "fb1bd4c58976",
+          name: "7",
+          position: {
+                x: 17.65234677712627,
+                z: -1.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "c3b82bf22edc",
+          name: "8",
+          position: {
+                x: 17.65234677712627,
+                z: -3.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "cae274222f6c",
+          name: "9",
+          position: {
+                x: 17.65234677712627,
+                z: -5.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "f34a076b36a3",
+          name: "10",
+          position: {
+                x: 17.65234677712627,
+                z: -7.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "c94f3f0243a7",
+          name: "11",
+          position: {
+                x: 17.65234677712627,
+                z: -9.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "f3524c41d309",
+          name: "12",
+          position: {
+                x: 17.65234677712627,
+                z: -11.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "d7942311a750",
+          name: "13",
+          position: {
+                x: 17.65234677712627,
+                z: -17.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "e5fb7587a358",
+          name: "14",
+          position: {
+                x: 17.65234677712627,
+                z: -14.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "c5a4f171c1f8",
+          name: "15",
+          position: {
+                x: 20.65234677712627,
+                z: -14.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+        {
+          id: "cc51c86dfc78",
+          name: "16",
+          position:{
+                x: 14.65234677712627,
+                z: -14.9780965275984,
+                elevation: 0.009999999776482582,
+                levelIndex: 0,
+              },
+        },
+      ];
+
+      const timeseries = [
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 628,
+          uuid: "de9844aef33d",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 495,
+          uuid: "cde60d0f9c4b",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 400,
+          uuid: "e22831cdda28",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 400,
+          uuid: "f7262ecc48b9",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 400,
+          uuid: "fdee6f5c3609",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 552,
+          uuid: "fa4ced683b3e",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 1276,
+          uuid: "fb1bd4c58976",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 486,
+          uuid: "c3b82bf22edc",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 449,
+          uuid: "cae274222f6c",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 616,
+          uuid: "f34a076b36a3",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 550,
+          uuid: "c94f3f0243a7",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 400,
+          uuid: "f3524c41d309",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 400,
+          uuid: "d7942311a750",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 652,
+          uuid: "e5fb7587a358",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 820,
+          uuid: "c5a4f171c1f8",
+        },
+        {
+          ts: "2024-01-16T11:10:00Z",
+          value: 548,
+          uuid: "cc51c86dfc78",
+        },
+      ];
+
+      for (let i = 0; i < timeseries.length; i++) {
+        timeseries[i].position = sensors[i].position;
+        timeseries[i].id = i;
+      }
+
+      class Space {
+        constructor(spaceId, clientToken, timeseries) {
+          this.spaceId = spaceId;
+          this.clientToken = clientToken;
+          this.timeseries = timeseries;
+          this.space = null;
+        }
+
+        initSpace(smplr) {
+          this.space = new smplr.Space({
+            spaceId: spaceId,
+            clientToken: clientToken,
+            containerId: "smplrspace-container",
+          });
+          this.space.startViewer({
+            preview: false,
+            cameraPlacement: {
+              alpha: 0,
+            beta: 0.6,
+            radius: 30,
+            target: {
+              x: 16,
+              y: 0,
+              z: -11
+            },
+            },
+            onReady: () => {
+              this.update();
+              console.log("success");
+            },
+            onError: (error) => console.error("Could not start viewer", error),
+          });
+        }
+
+        getColorRange(value) {
+          if (value < 400 || value > 1000) {
+              throw new Error("Value must be between 400 and 800.");
+          }
+          
+          // Calculate the percentage of the value within the range
+          const percentage = (value - 400) / 600;
+          
+          // Calculate RGB components
+          const red = Math.round(255 * (1 - percentage));
+          const green = Math.round(255 * percentage);
+          const blue = 0;
+          
+          // Convert RGB to hex
+          const rgbToHex = (r, g, b) => {
+              return '#' + [r, g, b].map(x => {
+                  const hex = x.toString(16);
+                  return hex.length === 1 ? '0' + hex : hex;
+              }).join('');
+          };
+          
+          return rgbToHex(red, green, blue);
+      }
+
+
+
+        update() {
+          this.space.removeDataLayer("heat");
+          console.log("ts: ", this.timeseries);
+
+          this.space.addDataLayer({
+            id: "heat",
+            type: "heatmap",
+            style: "bar-chart",
+
+            data: this.timeseries,
+            value: (dat) => dat.value,
+            height: (dat) => {
+              const result = dat / 800;
+              return result
+            
+            },
+            color: (val) => {
+              console.log(val);
+              const _color = this.getColorRange(val);
+              console.log(_color);
+              return _color;
+            },
+          });
+          console.log("updated room");
+        }
+      }
+
+      spc = new Space(
+        spaceId,
+        clientToken,
+        timeseries,
+    )
+
+    async function wait() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 500);
+        });
+      }
+
+      async function start() {
+        while (typeof smplr === "undefined") {
+          await wait();
+        }
+        spc.initSpace(smplr);
+
+        /*
+        setInterval(() => {
+          spc.fetchAll();
+        }, UPDATE_FREQUENCY * 1000);*/
+      }
+
+      start();
+
+
+    </script>
+
+</body>
+</html>
