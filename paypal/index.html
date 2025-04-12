@@ -41,7 +41,7 @@
         return actions.order.capture().then(function (details) {
           // Show a confirmation message to the buyer
           alert("Transaction completed by " + details.payer.name.given_name);
-          window.location.href = "https://rickie-austin-114.github.io/paypal/success.html";
+          window.location.href = "./success.html";
         });
       },
 
