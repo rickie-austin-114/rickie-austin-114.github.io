@@ -31,7 +31,18 @@
 </head>
 <body>
 
-    <a href="https://rickie-austin-114.github.io/redirect/success.html">
-        go to success</a>
+    <button>Redirect</button>
+
+    <script>
+        const button = document.querySelector('button');
+        button.addEventListener('click', () => {
+            const url = new URL(window.location.href);
+
+
+            // Redirect to the PayPal page with the amount
+            window.location.href = `https://rickie-austin-114.github.io/redirect/success.html`;
+        });
+    </script>
+
 </body>
 </html>
