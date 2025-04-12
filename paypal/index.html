@@ -12,8 +12,13 @@
 
   <script>
 
+    const url = new URL(window.location.href);
+
     const params = new URLSearchParams(url.search);
     const amount = params.get('amount');
+
+    console.log("Amount to be paid: " + amount);
+
     // Render the PayPal button into the container
     paypal.Buttons({
 
