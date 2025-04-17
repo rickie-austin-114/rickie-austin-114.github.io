@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3D Model Viewer</title>
     <style>
-        body { margin: 0; }
-        canvas { display: block; }
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
     </style>
-</head>
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
-    <script>
-        // Scene setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-        
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        scene.add(directionalLight);
-        
-        // Load the .obj model
-        const objLoader = new THREE.OBJLoader();
-        objLoader.load('./LibertyStatue/LibertStatue.obj', (object) => {
-            scene.add(object);
-        }, undefined, (error) => {
-            console.error('An error happened', error);
-        });
-
-        // Camera position
-        camera.position.z = 5;
-
-        // Render loop
-        const animate = function () {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        };
-        animate();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
-</body>
+  </head>
+  <body>
+    <div class="sketchfab-embed-wrapper">
+      <iframe
+        title="Manhattan - New York"
+        frameborder="0"
+        allowfullscreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        xr-spatial-tracking
+        execution-while-out-of-viewport
+        execution-while-not-rendered
+        web-share
+        src="https://sketchfab.com/models/6f6c4edb53e04b4ab1dae9024e1b8bde/embed"
+      >
+      </iframe>
+      <p
+        style="
+          font-size: 13px;
+          font-weight: normal;
+          margin: 5px;
+          color: #4a4a4a;
+        "
+      >
+        <a
+          href="https://sketchfab.com/3d-models/manhattan-new-york-6f6c4edb53e04b4ab1dae9024e1b8bde?utm_medium=embed&utm_campaign=share-popup&utm_content=6f6c4edb53e04b4ab1dae9024e1b8bde"
+          target="_blank"
+          rel="nofollow"
+          style="font-weight: bold; color: #1caad9"
+        >
+          Manhattan - New York
+        </a>
+        by
+        <a
+          href="https://sketchfab.com/3dcreation_lyon?utm_medium=embed&utm_campaign=share-popup&utm_content=6f6c4edb53e04b4ab1dae9024e1b8bde"
+          target="_blank"
+          rel="nofollow"
+          style="font-weight: bold; color: #1caad9"
+        >
+          3dcreation_lyon
+        </a>
+        on
+        <a
+          href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=6f6c4edb53e04b4ab1dae9024e1b8bde"
+          target="_blank"
+          rel="nofollow"
+          style="font-weight: bold; color: #1caad9"
+          >Sketchfab</a
+        >
+      </p>
+    </div>
+  </body>
 </html>
